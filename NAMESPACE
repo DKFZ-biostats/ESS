@@ -1,0 +1,133 @@
+#exportPattern("^[[:alpha:]]+")
+# ls("package:priorESS0.1")
+export("as.powerprior",          
+"as.mixture.prior",
+"as.mix",
+#"as.fix",
+#"my.postmix.normFix",
+#"sigma.normFix",
+#"BMSE", 
+"MSE", 
+#"freqError",  # EXPERIMENTAL
+# "BMSE.default"                       "BMSE.mix"                          
+# "BMSEmix"                            "BMSEmix.betaMix"                   
+# "BMSEmix.default"                    "BMSEmix.normMix"                   
+# "BMSEpp"                             "BMSEpp.betaMix"                    
+# "BMSEpp.default"                     "BMSEpp.normMix"                    
+# "BMSEuni"                            "BMSEuni.betaMix"                   
+# "BMSEuni.default"                    "BMSEuni.normMix"                   
+# "BMSEmix.normFix",
+ "ecss",                              
+#ecss.default" ,                     
+"ecss.ecss",                          
+"ecss.mix",  "ecss.mixture.prior",                        
+# "ecssReimherr",                       "ecssReimherr.binom",                
+ "ehss",                               
+# "ehss.betaMix"                      
+# "ehss.default"                     
+# "ehss.normMix"                      
+# "MSEmix"                             "MSEmix.default"                    
+# "MSEmix.normMix"                     "MSEuni"                            
+# "MSEuni.default"                     "MSEuni.normMix"                    
+# "my.log_sum_exp"                     "my.postmix.normMix"                
+# "my.summary.normMix"                
+ "plot.ecss",                         
+# "plot.ecssReimherr" ,                 
+# "plot.ecssReimherr.binom",           
+ "postmix.powerprior"  ,               
+ "powerparameter"    ,                
+# "powerparameter.betaMix",             "powerparameter.default"   ,         
+# "powerparameter.normMix" ,           
+ "powerprior",                        
+# "powerprior.betaMix",                 "powerprior.default" ,               
+# "powerprior.normMix",                 
+ #"print.ecss"                        
+"adaptiveDesign_binomial","adaptiveDesign_normal"#,"simDesign_normal"
+)            
+
+
+
+
+
+
+#importFrom("foreach", "%:%", "%dopar%","foreach")
+importFrom("BB", "spg")
+importFrom("VGAM", "dbetabinom.ab")
+importFrom("parallel", "mclapply")
+importFrom("harvestr", "gather")
+importFrom("assertthat", "assert_that")
+importFrom("RBesT","likelihood", "likelihood<-", "postmix", "oc2S", "mixnorm", "mixbeta", "dmixdiff","pmix","rmixdiff","pmixdiff", "sigma<-","sigma" )
+importFrom("graphics", "abline", "arrows", "legend", "lines", "plot",
+           "points", "text")
+importFrom("stats", "approxfun", "dbinom", "dnorm", "integrate", "lm",
+           "optimize", "qnorm", "rnorm","pnorm", "splinefun","sd")
+
+S3method(print, ecss)
+S3method(plot, ecss)
+
+S3method(MSEmix, default)
+S3method(MSEmix, normMix)
+S3method(MSEmix, betaMix)
+
+S3method(MSEuni, default)
+S3method(MSEuni, normMix)
+S3method(MSEuni, betaMix)
+
+S3method(MSEpp, default)
+S3method(MSEpp, normMix)
+S3method(MSEpp, betaMix)
+
+S3method(MSE, default)
+S3method(MSE, mix)
+
+
+S3method(BMSEmix, default)
+S3method(BMSEmix, normMix)
+#S3method(BMSEmix, normFix)
+S3method(BMSEmix, betaMix)
+
+S3method(BMSEuni, default)
+S3method(BMSEuni, normMix)
+S3method(BMSEuni, betaMix)
+
+S3method(BMSEpp, default)
+S3method(BMSEpp, normMix)
+S3method(BMSEpp, betaMix)
+
+S3method(BMSE, default)
+S3method(BMSE, mix)
+
+S3method(freqError, default)
+S3method(freqError, betaMix)
+S3method(freqError, normMix)
+
+
+S3method(ecss, default)
+S3method(ecss, ecss)
+S3method(ecss, mix)
+S3method(ecss, mixture.prior)
+
+S3method(ehss, default)
+S3method(ehss, betaMix)
+S3method(ehss, normMix)
+
+
+S3method(powerprior, default)
+S3method(powerprior, betaMix)
+S3method(powerprior, normMix)
+
+S3method(powerparameter, default)
+S3method(powerparameter, betaMix)
+S3method(powerparameter, normMix)
+
+S3method(postmix, powerprior)
+
+S3method(as.mixture.prior, default)
+S3method(as.mixture.prior, betaMix)
+S3method(as.mixture.prior, normMix)
+
+S3method(as.mix, default)
+S3method(as.mix, beta)
+S3method(as.mix, normal)
+
+
