@@ -31,7 +31,8 @@ export("as.powerprior",
 # "MSEuni.default"                     "MSEuni.normMix"                    
 # "my.log_sum_exp"                     "my.postmix.normMix"                
 # "my.summary.normMix"                
- "plot.ecss",                         
+ "plot.ecss", 
+"plotECSS",
 # "plot.ecssReimherr" ,                 
 # "plot.ecssReimherr.binom",           
  "postmix.powerprior"  ,               
@@ -63,6 +64,7 @@ importFrom("stats", "approxfun", "dbinom", "dnorm", "integrate", "lm",
            "optimize", "qnorm", "rnorm","pnorm", "splinefun","sd")
 
 S3method(print, ecss)
+S3method(print, ECSSplot)
 S3method(plot, ecss)
 
 S3method(MSEmix, default)
