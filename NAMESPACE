@@ -1,14 +1,15 @@
-#exportPattern("^[[:alpha:]]+")
-# ls("package:priorESS0.1")
 export("as.powerprior",          
 "as.mixture.prior",
 "as.mix",
+# empirical Bayes commensurate prior: first check appropriateness of approximation
+        #"as.commensurateEB",
+        #"postmix.commensurateEB",
 #"as.fix",
 #"my.postmix.normFix",
 #"sigma.normFix",
-#"BMSE", 
 "MSE", 
 #"freqError",  # EXPERIMENTAL
+#"BMSE", 
 # "BMSE.default"                       "BMSE.mix"                          
 # "BMSEmix"                            "BMSEmix.betaMix"                   
 # "BMSEmix.default"                    "BMSEmix.normMix"                   
@@ -23,6 +24,7 @@ export("as.powerprior",
 "ecss.mix",  "ecss.mixture.prior",                        
 # "ecssReimherr",                       "ecssReimherr.binom",                
  "ehss",                               
+"ess",                               
 # "ehss.betaMix"                      
 # "ehss.default"                     
 # "ehss.normMix"                      
@@ -35,7 +37,7 @@ export("as.powerprior",
 "plotECSS",
 # "plot.ecssReimherr" ,                 
 # "plot.ecssReimherr.binom",           
- "postmix.powerprior"  ,               
+ "postmix.powerprior"  ,     
  "powerparameter"    ,                
 # "powerparameter.betaMix",             "powerparameter.default"   ,         
 # "powerparameter.normMix" ,           
@@ -52,16 +54,21 @@ export("as.powerprior",
 
 
 #importFrom("foreach", "%:%", "%dopar%","foreach")
+
 importFrom("BB", "spg")
 importFrom("VGAM", "dbetabinom.ab")
 importFrom("parallel", "mclapply")
 importFrom("harvestr", "gather")
 importFrom("assertthat", "assert_that")
-importFrom("RBesT","likelihood", "likelihood<-", "postmix", "oc2S", "mixnorm", "mixbeta", "dmixdiff","pmix","rmixdiff","pmixdiff", "sigma<-","sigma" )
+importFrom("RBesT","likelihood", "likelihood<-", "postmix", "oc2S", "mixnorm", "mixbeta", "dmixdiff","pmix","rmixdiff","pmixdiff", "sigma<-","sigma","ess" )
 importFrom("graphics", "abline", "arrows", "legend", "lines", "plot",
            "points", "text")
-importFrom("stats", "approxfun", "dbinom", "dnorm", "integrate", "lm",
+importFrom("stats", "approxfun", "dbinom", "dnorm", "qbinom","integrate", "lm",
            "optimize", "qnorm", "rnorm","pnorm", "splinefun","sd")
+importFrom("stats", "end", "quantile", "start", "update", "var", "dbeta")
+importFrom("ggplot2", "aes","aes_string", "ggplot", "geom_line")
+importFrom("plyr", "llply")
+importFrom("MASS", "mvrnorm")
 
 S3method(print, ecss)
 S3method(print, ECSSplot)
@@ -79,9 +86,12 @@ S3method(MSEpp, default)
 S3method(MSEpp, normMix)
 S3method(MSEpp, betaMix)
 
+S3method(MSEcommensurateEB, default)
+S3method(MSEcommensurateEB, normMix)
+S3method(MSEcommensurateEB, betaMix)
+
 S3method(MSE, default)
 S3method(MSE, mix)
-
 
 S3method(BMSEmix, default)
 S3method(BMSEmix, normMix)
@@ -113,6 +123,10 @@ S3method(ehss, default)
 S3method(ehss, betaMix)
 S3method(ehss, normMix)
 
+S3method(ess, default)
+S3method(ess, betaMix)
+S3method(ess, normMix)
+
 
 S3method(powerprior, default)
 S3method(powerprior, betaMix)
@@ -123,6 +137,7 @@ S3method(powerparameter, betaMix)
 S3method(powerparameter, normMix)
 
 S3method(postmix, powerprior)
+S3method(postmix, commensurateEB)
 
 S3method(as.mixture.prior, default)
 S3method(as.mixture.prior, betaMix)
@@ -131,5 +146,7 @@ S3method(as.mixture.prior, normMix)
 S3method(as.mix, default)
 S3method(as.mix, beta)
 S3method(as.mix, normal)
+
+
 
 
