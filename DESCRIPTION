@@ -1,16 +1,18 @@
 Package: ESS
 Type: Package
-Title: Quantification of prior informativeness in terms of prior
-        effective and effective current sample size
-Version: 0.4.4.2
+Title: Quantification of prior informativeness in terms of prior effective and effective current sample size
+Version: 0.4.4.5
 Date: 2019-06-14
 Author: Manuel Wiesenfarth
 Maintainer: Manuel Wiesenfarth <m.wiesenfarth@dkfz.de>
 Description: Computes prior prior effective and effective current sample size of a prior distribution. The concept of prior effective sample sizes (prior ESS) is convenient to quantify and communicate informativeness of prior distributions as it equates the information provided by a prior to a sample size. Prior information can arise from historical observations, thus the traditional approach identifies the ESS with such historical sample size (prior ESS). However, this measure is independent from newly observed data, and thus would not capture an actual ``loss of information'' induced by the prior in case of prior-data conflict. The effective current sample size (ECSS) of a prior relates prior information to a number of (virtual) samples from the current data model and describes the impact of the prior capturing prior-data conflict. Supports mixture and empirical Bayes power and commensurate priors. See Wiesenfarth and Calderazzo (2019).
 License: GPL-3
 VignetteBuilder: knitr
-Depends: R (>= 3.4.0), RBesT
+Depends: 
+    R (>= 3.4.0),
+    RBesT
 Suggests: numDeriv, StudyPrior, foreach, rmarkdown, knitr
-Imports: assertthat, BB, VGAM, parallel, harvestr, plyr, ggplot2, MASS
-NeedsCompilation: no
-Packaged: 2019-06-17 21:46:51 UTC; wiesenfa
+Imports: 
+    assertthat, BB, VGAM, parallel, plyr, ggplot2, MASS
+
+

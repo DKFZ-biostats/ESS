@@ -4,11 +4,11 @@
 \alias{powerparameter.normMix}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Computes empirical Bayes esitmate of power parameter
+Computes empirical Bayes estimate of power parameter
 %%  ~~function to do ... ~~
 }
 \description{
-Computes empirical Bayes esitmate of power parameter (Gravestock&Held, 2017).
+Computes empirical Bayes estimate of power parameter (Gravestock&Held, 2017).
 }
 \usage{
 \method{powerparameter}{betaMix}(prior, n, r, p.prior.a = 1, p.prior.b = 1, ...)
@@ -63,15 +63,17 @@ Manuel Wiesenfarth
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{ package StudyPrior, 
-\link{postmix.powerprior}
+\seealso{ \code{\link{postmix.powerprior}},
+
+package StudyPrior
+
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 # Normal Outcome
-  # data SD
+  # standard deviation
     sigma=1
-  # prior with nominal EHSS=50
+  # prior with nominal prior ESS=50
     info <-mixnorm(informative=c(1, 0,1/sqrt(50)), sigma=sigma)
   
   n=10 # sample size

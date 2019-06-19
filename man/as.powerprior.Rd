@@ -52,9 +52,9 @@ Manuel Wiesenfarth
 \examples{
 ######################
 # Normal Outcome
-  # data SD
+  # standard deviation
     sigma=1
-  # prior with nominal EHSS=50
+  # prior with nominal prior ESS=50
     info <-mixnorm(informative=c(1, 0,1/sqrt(50)), sigma=sigma)
   
   n=10 # sample size

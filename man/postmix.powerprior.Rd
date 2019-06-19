@@ -1,35 +1,43 @@
 \name{postmix.powerprior}
 \alias{postmix.powerprior}
+\alias{powerprior.betaMix}
+\alias{powerprior.normMix}
+\alias{powerprior}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Posterior Analysis for empirical Bayes powerprior
 }
 
 \description{
-Calculates the posterior distribution for data data given a prior priormix, where the prior is a powerprior (Gravestock&Held, 2017). Extends \code{\link[RBesT]{postmix}}.
+Calculates the posterior distribution given data \code{data} and prior \code{priormix}, where the prior is an empirical Bayes powerprior (Gravestock&Held, 2017). Supports beta-binomial and normal-normal model.
 }
 \usage{
 \method{postmix}{powerprior}(priormix, data, n, r, m, se, p.prior.a, p.prior.b, ...)
+\method{powerprior}{betaMix}(prior, n, r, p.prior.a, p.prior.b, ...)
+\method{powerprior}{normMix}(prior, n, m, sigma, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{priormix}{
 prior object created by \code{\link{as.powerprior}}
 }
+ \item{prior}{An RBesT mixture object with a single mixture component}
   \item{data}{
 individual data as in \code{\link[RBesT]{postmix}}. If the individual data is not given, then summary data has to be provided
 }
   \item{n}{
 sample size}
   \item{r}{
-Number of successes
+number of successes
 }
   \item{m}{
-Sample mean
+sample mean
 }
   \item{se}{
-Sample standard error
+sample standard error
 }
+\item{sigma}{standard deviation}
   \item{p.prior.a}{
   in case of binary outcome, shape1 parameter of initial beta prior for successes
 }
@@ -37,12 +45,14 @@ Sample standard error
   in case of binary outcome, shape2 parameter of initial beta prior for successes
 }
   \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+  currently not supported
 }
 }
-%\details{
+\details{
+Extends \code{\link[RBesT]{postmix}}. See its documentation for further details on arguments.
+\code{powerprior} and \code{postmix.powerprior} are equivalent except that the former accepts a single component mixture object while the latter accepts a \code{powerprior} object created by \code{\link{as.powerprior}}. \code{powerprior} may be deprecated in the future.
 %%  ~~ If necessary, more details than the description above ~~
-%}
+}
 %\value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
@@ -69,9 +79,9 @@ Manuel Wiesenfarth
 \examples{
 ######################
 # Normal Outcome
-  # data SD
+  # standard deviation
     sigma=1
-  # prior with nominal EHSS=50
+  # prior with nominal prior ESS=50
     inf=c(0,1/sqrt(50))
     info <-mixnorm(informative=c(1, inf), sigma=sigma)
 

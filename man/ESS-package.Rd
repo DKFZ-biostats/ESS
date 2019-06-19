@@ -20,12 +20,9 @@ The DESCRIPTION file:
 
 Maintainer: \packageMaintainer{ESS}
 }
-%\references{
-%~~ Literature or other references for background information ~~
-%}
-%~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation ~~
-%~~ directory ~~
-\note{This is a preliminary version and changes in syntax are not unlikely.
+\references{
+Wiesenfarth, M., Calderazzo, S. (2019). Quantification of Prior Impact in Terms of Effective Current Sample Size. Submitted.
+
 }
 \keyword{ package }
 %\seealso{

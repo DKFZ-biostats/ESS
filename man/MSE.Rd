@@ -8,10 +8,10 @@
 \alias{MSEpp.normMix}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Comute frequentist MSE
+Compute frequentist MSE
 }
 \description{
-Comute frequentist MSE
+Compute frequentist MSE for use as argument in \code{\link{ecss}}
 }
 \usage{
 MSE(prior, ...)

@@ -2,7 +2,7 @@ export("as.powerprior",
 "as.mixture.prior",
 "as.mix",
 # empirical Bayes commensurate prior: first check appropriateness of approximation
-        #"as.commensurateEB",
+        "as.commensurateEB",
         #"postmix.commensurateEB",
 #"as.fix",
 #"my.postmix.normFix",
@@ -58,7 +58,6 @@ export("as.powerprior",
 importFrom("BB", "spg")
 importFrom("VGAM", "dbetabinom.ab")
 importFrom("parallel", "mclapply")
-importFrom("harvestr", "gather")
 importFrom("assertthat", "assert_that")
 importFrom("RBesT","likelihood", "likelihood<-", "postmix", "oc2S", "mixnorm", "mixbeta", "dmixdiff","pmix","rmixdiff","pmixdiff", "sigma<-","sigma","ess" )
 importFrom("graphics", "abline", "arrows", "legend", "lines", "plot",

@@ -58,7 +58,7 @@ as.powerprior=function(prior, p.prior.a=1, p.prior.b=1){
     ds=powerparameter(prior,m=m,n=n,sigma=sigma)
     mixnorm(c(1,prior["m",],sqrt(prior["s",]^2/ds)),sigma=sigma)
   }
-  # ehss can be calculated using ehss(powerprior(prior,m,n,sigma)) or ehss(postmix(as.powerprior(prior),m,n,sigma))
+  # ehss can be calculated using ess(powerprior(prior,m,n,sigma)) or ehss(postmix(as.powerprior(prior),m,n,sigma))
   
   powerprior.betaMix=function(prior, n, r, p.prior.a, p.prior.b, ...){
     if (missing(p.prior.a)| missing(p.prior.b)){

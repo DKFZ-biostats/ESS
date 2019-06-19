@@ -18,7 +18,7 @@ function(prior,
          prior.base,  
          D=MSE,
          by,
-         grid.length=50, grid.prec=1e-6,
+         grid.length=50, min.q,
          cores=1,
          integrate=FALSE, subdivisions=100L,...){
   
@@ -36,6 +36,7 @@ args=as.list(match.call(expand.dots = FALSE))
     if (ncol(prior.base)!=1) stop("prior.base may only have one mixture component")
 
     if (missing(by)) by=5
+   if (missing(min.q)) min.q=1e-6
 
     if (!missing(true.mean)){
       data.mean=true.mean  
@@ -90,6 +91,7 @@ args=as.list(match.call(expand.dots = FALSE))
     }
     
     if (missing(by)) by=1
+   if (missing(min.q)) min.q=0
     
     if (!missing(true.mean)) data.mean=true.mean else {
       if (!missing(data)) {
@@ -118,7 +120,7 @@ args=as.list(match.call(expand.dots = FALSE))
       # U.info
         if (integrate ) U.info= integrate(Dfun,-Inf,Inf, k=k, PRIOR=prior,subdivisions = subdivisions,stop.on.error = F)$value
         else {
-          nq=qnorm(grid.prec)*sigma/sqrt(k)
+          nq=qnorm(min.q)*sigma/sqrt(k)
           grid=seq(data.mean+nq,data.mean-nq,length.out=grid.length)
           d.grid=diff(grid[1:2])
           U.info=sum(d.grid*Dfun.vec(grid,k=k,PRIOR=prior))
@@ -131,10 +133,12 @@ args=as.list(match.call(expand.dots = FALSE))
           } 
         } else U.base=NA
     } else if (inherits(prior,"betaMix")){
-      U.info= sum(Dfun(0:k,k=k,PRIOR=prior))
+      grid=qbinom(min.q,k,data.mean):qbinom(1-min.q,k,data.mean) #0:k if min.q==0
+      U.info= sum(Dfun(grid,k=k,PRIOR=prior))
       U.base=ifelse((k==1 | k%in%n.target | k==n.max),
-                    yes = sum(Dfun(0:k,k=k,PRIOR=prior.base)), no=NA)
-    }
+                    yes = sum(Dfun(grid,k=k,PRIOR=prior.base)), no=NA)
+
+          }
     list(U.base=U.base,U.info=U.info)
   },mc.cores = cores)
   U.base=sapply(res,function(z) z$U.base)

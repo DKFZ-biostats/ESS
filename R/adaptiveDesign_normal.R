@@ -8,8 +8,8 @@ function(ctl.prior, treat.prior,
          nsim=100,cores=1, seed=123, progress="text"
          ) {
 
-  seedL=sapply(gather(nsim,seed=seed),function(x) x[2:7])
-
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(seed)
   
   MU <- try(data.frame(muc = muc, mut = mut))
   if (inherits(MU, "try-error")) {
@@ -29,8 +29,7 @@ function(ctl.prior, treat.prior,
     # stopCluster(cl)
   requireNamespace("plyr", quietly = TRUE)
   res=plyr::llply(1:nrow(MU), function(z)
-                    mclapply(1:nsim,function(it) simDesign_normal(seed=seedL[,it],
-                                                           ctl.prior=ctl.prior, treat.prior=treat.prior,
+                    mclapply(1:nsim,function(it) simDesign_normal(ctl.prior=ctl.prior, treat.prior=treat.prior,
                                                            N1=N1, Ntarget=Ntarget, Nmin=Nmin, M=M,
                                                            muc=MU$muc[z],mut=MU$mut[z],sc=sc,st=st, sc.known=sc.known,st.known=st.known,
                                                            discard.prior=discard.prior, vague=vague,
@@ -57,15 +56,13 @@ function(ctl.prior, treat.prior,
 
 
 simDesign_normal <-
-function(seed,
-         ctl.prior, treat.prior,
+function(ctl.prior, treat.prior,
          N1, Ntarget, Nmin, M,
          muc,mut,sc,st, sc.known=TRUE,st.known=TRUE,
          discard.prior=TRUE,vague=mixnorm(vague=c(1, 0,10)),
          ess="ecss",ehss.method="mix.moment", min.ecss, D=BMSE,
          decision
         ){
-  set.seed(seed,"L'Ecuyer-CMRG")
   # interim
     obs.interim=rnorm(N1,muc,sc)
     if (is.logical(sc.known)){
@@ -76,7 +73,7 @@ function(seed,
   # ESS 
     if (ess=="ehss"){
       post=suppressMessages(postmix(ctl.prior, n=Ntarget,m=mean(obs.interim),se=sigma.c/sqrt(Ntarget)))
-      ESSstage1=ESSfirst<- round(suppressMessages(suppressWarnings(ehss(post, method=ehss.method))),0)-Ntarget
+      ESSstage1=ESSfirst<- round(suppressMessages(suppressWarnings(ess(post, method=ehss.method))),0)-Ntarget
     } else if (ess=="ecss"){
       U=ecss(ctl.prior,m=mean(obs.interim),sigma=sigma.c, n=N1,
            n.target=Ntarget, min.ecss=min.ecss ,prior.base=vague,D=D

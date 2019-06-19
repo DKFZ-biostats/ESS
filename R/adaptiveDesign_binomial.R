@@ -4,7 +4,7 @@ adaptiveDesign_binomial <- # doesn't support powerprior because oc2S() used to c
            pc, pt, 
            discard.prior=TRUE,vague=mixbeta(c(1, 1,1)),
            ess="ecss",
-           ehss.method="mix.moment", substractEHSSofVague=TRUE,
+           ehss.method="mix.moment", subtractESSofVague=TRUE,
            min.ecss, D=MSE,
            decision) {
   P <- try(data.frame(pc = pc, pt = pt))
@@ -20,8 +20,8 @@ adaptiveDesign_binomial <- # doesn't support powerprior because oc2S() used to c
       # ESS 
         if (ess=="ehss"){
           post=suppressMessages(postmix(ctl.prior, r=r/N1*Ntarget, n=Ntarget))
-          ESSfirst[r+1]=ESSstage1[r+1] <- round(suppressMessages(suppressWarnings(ehss(post, method=ehss.method))),0)-Ntarget
-          if (substractEHSSofVague) ESSfirst[r+1]=ESSstage1[r+1]=ESSstage1[r+1]-round(suppressMessages(suppressWarnings(ehss(vague, method=ehss.method))),0)
+          ESSfirst[r+1]=ESSstage1[r+1] <- round(suppressMessages(suppressWarnings(ess(post, method=ehss.method))),0)-Ntarget
+          if (subtractESSofVague) ESSfirst[r+1]=ESSstage1[r+1]=ESSstage1[r+1]-round(suppressMessages(suppressWarnings(ess(vague, method=ehss.method))),0)
         } else if (ess=="ecss"){
           U=ecss(ctl.prior,r=r,n=N1,
                n.target=Ntarget, min.ecss=min.ecss ,prior.base=vague,D=D
@@ -35,8 +35,8 @@ adaptiveDesign_binomial <- # doesn't support powerprior because oc2S() used to c
           # ess of vague
           if (ess=="ehss"){
             post=suppressMessages(postmix(ctl.prior.use[[r+1]], r=r/N1*Ntarget, n=Ntarget))
-            if (!substractEHSSofVague){
-              ESSstage1[r+1] <- round(suppressMessages(suppressWarnings(ehss(post, method=ehss.method))),0)-Ntarget  
+            if (!subtractESSofVague){
+              ESSstage1[r+1] <- round(suppressMessages(suppressWarnings(ess(post, method=ehss.method))),0)-Ntarget  
             } else ESSstage1[r+1] <- 0
             
           } else if (ess=="ecss"){

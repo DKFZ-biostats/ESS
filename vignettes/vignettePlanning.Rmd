@@ -1,0 +1,98 @@
+---
+title: "Visualization of the impact of prior distributions in terms of effective current sample size"
+author: "Manuel Wiesenfarth"
+date: "`r Sys.Date()`"
+output: rmarkdown::pdf_document
+vignette: >
+  %\VignetteDepends{RBesT}
+  %\VignetteIndexEntry{Visualization of the impact of priors in terms of effective sample size"}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include = FALSE}
+library(RBesT)
+library(ESS)
+knitr::opts_chunk$set(
+  eval=T, 
+  collapse = TRUE,
+  comment = "#>"
+)
+
+```
+
+This vignette reproduces Section 3 in Wiesenfarth and Calderazzo (2019) and visualizes how `plotECSS()` can be used to quantify the impact of a prior (including mixture priors and empirical Bayes power priors/commensurate priors) in terms of effective current sample sizes on a grid of true values of the data generating process.
+
+The effective current sample size (ECSS) is defined as follows:
+
+Let $\pi$ be the prior of interest (specified by `priorlist`) with mean $\theta_\pi$, $\pi_b$ a baseline prior (an objective or reference prior) (specified by `prior.base`) and $f_n(y_{1:n} | \theta_0)$ be the data distribution. 
+
+The ECSS at target sample size $k$ (specified by `n.target`) is defined as the sample size $m$ which minimizes
+$$ECSS=argmin_{m} | D^{\theta_0}_{MSE}({\pi}(\theta|y_{1:(k-m)})) -  D^{\theta_0}_{MSE}(\pi_b(\theta|y_{1:k})) |$$
+
+where $D^{\theta_0}_{MSE}$ is the mean squared error measure induced by the posterior mean estimate $\mbox{E}_\pi(\theta|y_{1:k})$,
+$$D^{\theta_0}_{MSE}({\pi}(\theta|y_{1:k}))=E_{y|\theta_0 } [ E_\pi(\theta|y_{1:k})-\theta_0 ]^2$$
+or a different target measure specified by  `D`.
+The true parameter value $\theta_0$ (specified by `grid`) is assumed to be known.
+
+# Normal Outcome
+
+```{r, echo=T}
+  # standard deviation
+    sigma=1
+  # baseline
+    rob=c(0,10)
+    vague <-mixnorm(vague=c(1, rob), sigma=sigma)
+  # prior with nominal prior ESS=50
+    inf=c(0,1/sqrt(50))
+    info <-mixnorm(informative=c(1, inf), sigma=sigma)
+  # robust mixture
+    mix50 <-mixnorm(informative=c(.5, inf),vague=c(.5, rob), sigma=sigma)
+  # emprirical Bayes power prior / emprirical Bayes commensurate prior
+    pp <-as.powerprior(info)
+
+  plotECSS(priorlist=list(informative=info,mixture=mix50,powerprior=pp), 
+            grid=((0:50)/50), 
+            n.target=200, min.ecss=-150,sigma=sigma,
+            prior.base=vague, progress="none", D=MSE)
+  
+
+```
+
+    
+# Binary outcome
+
+```{r, echo=T}
+# uniform baseline prior
+  rob=c(1,1)
+  vague <- mixbeta(rob=c(1.0, rob))
+# prior with nominal prior ESS=20
+  inf=c(4, 16)
+  info=mixbeta(inf=c(1, inf))
+  prior.mean=inf[1]/sum(inf)
+ 
+# robust mixture
+  mix50 <-mixbeta(informative=c(.5, inf), vague=c(.5, rob))
+# emprirical Bayes power prior / emprirical Bayes commensurate prior
+    pp <-as.powerprior(info)
+## emprirical Bayes commensurate prior (takes long)
+#  cp <-as.commensurateEB(info)
+
+plotECSS(priorlist=list(informative=info,mixture=mix50,powerprior=pp), 
+          grid=((0:10)/10), #use ((0:40)/40) for better resolution
+          n.target=40, min.ecss=-50,sigma=sigma,
+          prior.base=vague, progress="none", D=MSE)
+  
+
+```
+  
+
+# References
+
+Wiesenfarth, M., Calderazzo, S. (2019). Quantification of Prior Impact in Terms of Effective Current Sample Size. Submitted.
+
+# sessionInfo
+
+```{r, echo=F}
+sessionInfo()
+```

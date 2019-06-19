@@ -4,6 +4,7 @@ MSE.default <- function(prior, ...) warning("MSE does not know how to handle obj
 
 MSE.mix <-function(prior,y,k,true.mean, ...){
   if (inherits(prior,"powerprior")) return(MSEpp(prior,y=y,k=k,true.mean=true.mean, ...))
+  if (inherits(prior,"commensurateEB")) return(MSEcommensurateEB(prior,y=y,k=k,true.mean=true.mean, ...))
   else{
     if (ncol(prior)==1) return(MSEuni(prior,y=y,k=k,true.mean=true.mean, ...))
     else                return(MSEmix(prior,y=y,k=k,true.mean=true.mean, ...))
@@ -56,6 +57,65 @@ function(prior,y,k,true.mean, ...){
     MSEuni(pp,y,k,true.mean)
   }
 
+  
+ ############
+# MSEcommensurate
+  MSEcommensurateEB <- function(prior,...) UseMethod("MSEcommensurateEB")
+  MSEcommensurateEB.default <- function(prior, ...) warning("MSEcommensurateEB does not know how to handle object")
+  
+MSEcommensurateEB.normMix <-
+  function(prior,y,k,true.mean,l.eb=0,u.eb=Inf, ...){
+  
+    sigma=RBesT::sigma(prior)
+  
+    # MMLE of tau, Hobbs et al 2012 (5) ##
+      Delta.hat <- y -  prior["m",]
+      tau.EB <- 1/max( min( (Delta.hat^2)-(sigma^2/k)-prior["s",1]^2, u.eb ), l.eb )
+    var=  1/(1/(prior["s",1]^2+(1/tau.EB)+ k/sigma^2) ) 
+    mean=var*(prior["m",1]/(prior["s",1]^2+(1/tau.EB)) + y/(sigma^2/k)   )
+    (mean-true.mean)^2
+   
+}
+MSEcommensurateEB.betaMix <-
+  function(prior,y,k,true.mean, ...){
+  
+    r=y
+    n=k
+    n0=prior["a",]+prior["b",]
+    y0=prior["a",]
+      
+      k1=seq(0,500,by=.2)
+      marg=rep(NA,length(k1))
+      
+      for (i in 1:length(k1)) {
+        integrandU.V=Vectorize(function(th0C){
+          integrand=function(th,th0=th0C,k=k1[i]) dbinom(r,n,th)*dbinom(y0,n0,th0)*dbeta(th,k*th0,k*(1-th0))
+          as.numeric(integrate(integrand,0.001,0.999)[1])
+        })
+        marg[i]=as.numeric(integrate(integrandU.V,0.001,0.999)[1])
+      }
+      
+      k_emp=k1[which.max(marg)]
+      marg_e=marg[which.max(marg)]
+      
+      integrandU.V=Vectorize(function(thN){
+        integrand=function(th0,th=thN,k=k_emp)  dbinom(r,n,th)*dbinom(y0,n0,th0)*dbeta(th,k*th0,k*(1-th0))
+        as.numeric(integrate(integrand,0,1)[1])/marg_e
+      })
+      
+      xg=seq(0.001,0.999,by=0.001)
+      iU=integrandU.V(xg)
+      mean.thC=sum(xg*iU/sum(iU))
+   #   var.thC=sum(xg^2*iU/sum(iU))-mean.thC^2
+
+      (mean.thC-true.mean)^2
+  
+}
+  
+
+  
+  
+  
 ############
 # MSEmix
   MSEmix <- function(prior, ...) UseMethod("MSEmix")
