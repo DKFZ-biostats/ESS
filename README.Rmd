@@ -39,7 +39,7 @@ Computes prior effective and effective current sample size. The concept of prior
 To get the current development version from Github:
 
 ```{r, eval=F}
-devtools::install_github("wiesenfa/ESS")
+devtools::install_github("DKFZ-biostats/ESS")
 ```
 
 ```{r}
@@ -113,7 +113,7 @@ The true parameter value $\theta_0$ (specified by `grid`) is assumed to be known
 
 # References
 
-Wiesenfarth, M., Calderazzo, S. (2019). Quantification of Prior Impact in Terms of Effective Current Sample Size. Submitted.
+Wiesenfarth, M., & Calderazzo, S. (2020). Quantification of prior impact in terms of effective current sample size. Biometrics, 76(1), 326-336.
 
 
 
